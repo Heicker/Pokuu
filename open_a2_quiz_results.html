@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test OPEN A2</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+        h1 { text-align: center; }
+        .question { margin-bottom: 15px; }
+        .answers label { display: block; margin-bottom: 5px; }
+        .submit-btn { display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #result { margin-top: 20px; text-align: center; font-weight: bold; }
+        .review { margin-top: 20px; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Test OPEN A2 - Interaktivní kvíz</h1>
+    <form id="quizForm">
+<div class='question'><p><strong>1. Jaká je maximální výška letu v kategorii OPEN?</strong></p><div class='answers'><label><input type='radio' name='q0' value='0'> 120 metrů</label><label><input type='radio' name='q0' value='1'> 100 metrů</label><label><input type='radio' name='q0' value='2'> 150 metrů</label><label><input type='radio' name='q0' value='3'> 200 metrů</label></div></div><div class='question'><p><strong>2. Jaká je maximální rychlost dronu v podkategorii A2?</strong></p><div class='answers'><label><input type='radio' name='q1' value='0'> 19 m/s</label><label><input type='radio' name='q1' value='1'> 25 m/s</label><label><input type='radio' name='q1' value='2'> 15 m/s</label><label><input type='radio' name='q1' value='3'> 30 m/s</label></div></div><div class='question'><p><strong>3. Co znamená režim VLOS?</strong></p><div class='answers'><label><input type='radio' name='q2' value='0'> Let mimo vizuální dohled</label><label><input type='radio' name='q2' value='1'> Let za použití FPV brýlí</label><label><input type='radio' name='q2' value='2'> Let v přímém vizuálním dohledu pilota</label><label><input type='radio' name='q2' value='3'> Let pouze v řízeném prostoru</label></div></div><div class='question'><p><strong>4. Jak zjistíte, zda je oblast, kde chcete létat, v řízeném vzdušném prostoru?</strong></p><div class='answers'><label><input type='radio' name='q3' value='0'> Mapy Google</label><label><input type='radio' name='q3' value='1'> Letecké mapy a aplikace pro drony</label><label><input type='radio' name='q3' value='2'> Informace od ÚCL</label><label><input type='radio' name='q3' value='3'> Fyzické značky v terénu</label></div></div><div class='question'><p><strong>5. Jaký vliv má silný vítr na let dronu?</strong></p><div class='answers'><label><input type='radio' name='q4' value='0'> Zlepšuje stabilitu</label><label><input type='radio' name='q4' value='1'> Nemá žádný vliv</label><label><input type='radio' name='q4' value='2'> Zrychlené vybíjení baterie a nestabilita</label><label><input type='radio' name='q4' value='3'> Prodlužuje dobu letu</label></div></div><div class='question'><p><strong>6. Co znamená NOTAM?</strong></p><div class='answers'><label><input type='radio' name='q5' value='0'> Letový plán dronu</label><label><input type='radio' name='q5' value='1'> Dočasně omezený nebo nebezpečný prostor</label><label><input type='radio' name='q5' value='2'> Centrální evidence</label><label><input type='radio' name='q5' value='3'> Povolení k letu</label></div></div>
+        <button type="button" class="submit-btn" onclick="checkAnswers()">Odeslat</button>
+    </form>
+    <div id="result"></div>
+    <div id="review" class="review"></div>
+
+    <script>
+        const correctAnswers = [0, 0, 2, 1, 2, 1];
+        const questions = [
+            "Jaká je maximální výška letu v kategorii OPEN?",
+            "Jaká je maximální rychlost dronu v podkategorii A2?",
+            "Co znamená režim VLOS?",
+            "Jak zjistíte, zda je oblast, kde chcete létat, v řízeném vzdušném prostoru?",
+            "Jaký vliv má silný vítr na let dronu?",
+            "Co znamená NOTAM?"
+        ];
+        const answers = [
+            ["120 metrů", "100 metrů", "150 metrů", "200 metrů"],
+            ["19 m/s", "25 m/s", "15 m/s", "30 m/s"],
+            ["Let mimo vizuální dohled", "Let za použití FPV brýlí", "Let v přímém vizuálním dohledu pilota", "Let pouze v řízeném prostoru"],
+            ["Mapy Google", "Letecké mapy a aplikace pro drony", "Informace od ÚCL", "Fyzické značky v terénu"],
+            ["Zlepšuje stabilitu", "Nemá žádný vliv", "Zrychlené vybíjení baterie a nestabilita", "Prodlužuje dobu letu"],
+            ["Letový plán dronu", "Dočasně omezený nebo nebezpečný prostor", "Centrální evidence", "Povolení k letu"]
+        ];
+
+        function checkAnswers() {
+            let score = 0;
+            const form = document.getElementById('quizForm');
+            let reviewHtml = "";
+            
+            correctAnswers.forEach((correct, index) => {
+                const selected = form.querySelector(`input[name="q${index}"]:checked`);
+                if (selected) {
+                    const userAnswer = parseInt(selected.value);
+                    if (userAnswer === correct) {
+                        score++;
+                        reviewHtml += `<p><strong>${index+1}. ${questions[index]}</strong><br>
+                        Vaše odpověď: <span class='correct'>${answers[index][userAnswer]}</span> - <span class='correct'>Správně!</span></p>`;
+                    } else {
+                        reviewHtml += `<p><strong>${index+1}. ${questions[index]}</strong><br>
+                        Vaše odpověď: <span class='incorrect'>${answers[index][userAnswer]}</span><br>
+                        Správná odpověď: <span class='correct'>${answers[index][correct]}</span></p>`;
+                    }
+                } else {
+                    reviewHtml += `<p><strong>${index+1}. ${questions[index]}</strong><br>
+                    <span class='incorrect'>Neodpověděli jste</span><br>
+                    Správná odpověď: <span class='correct'>${answers[index][correct]}</span></p>`;
+                }
+            });
+            
+            document.getElementById('result').innerText = `Vaše skóre: ${score} / ${correctAnswers.length}`;
+            document.getElementById('review').innerHTML = reviewHtml;
+        }
+    </script>
+</body>
+</html>
